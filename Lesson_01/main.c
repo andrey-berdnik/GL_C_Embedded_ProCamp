@@ -1,25 +1,22 @@
-/******************************************************************************
-
-Welcome to GDB Online.
-GDB online is an online compiler and debugger tool for C, C++, Python, PHP, Ruby, 
-C#, VB, Perl, Swift, Prolog, Javascript, Pascal, HTML, CSS, JS
-Code, Compile, Run and Debug online from anywhere in world.
-
-*******************************************************************************/
 #include <stdio.h>
-
-int
-main ()
+/* печать таблицы температур по Фаренгейту и Цельсию для
+fahr = 0, 20 ... 300; вариант с плавающей точкой */
+int main()
 {
-  printf ("------------------------------------------------------\n");
-  printf ("|%-31s|%8s|%11s|\n","CPU","Rate","Price");
-  printf ("------------------------------------------------------\n");
-  printf ("|%-31s|%8i|%11.2f|\n", "AMD Athlon II N370 Dual-Core", 899, 0.0);
-  printf ("|%-31s|%8i|%11.2f|\n", "AMD Athlon II N550", 852, 0.0);
-  printf ("|%-31s|%8i|%11.2f|\n", "AMD Athlon II X2 240", 898, 24.5);
-  printf ("|%-31s|%8i|%11.2f|\n", "Intel Pentium G620T @ 2.20GHz", 896, 19.99);
-  printf ("|%-31s|%8i|%11.2f|\n","Qualcomm MSM8937", 892, 0.0);
-  printf ("------------------------------------------------------\n");
+ float fahr, celsius;
+ int lower, upper, step;
+ lower = 0; /* нижняя граница таблицы температур */
+ upper = 300; /* верхняя граница */
+ step = 20; /* шаг */
+ celsius = lower;
+ 
+ printf ("Far\tCel\n");
 
-  return 0;
+ while (celsius <= upper) {
+ 	fahr = (celsius * 9.0/5.0) + 32.0;
+
+
+ 	printf ("%3.0f %6.1f\n", celsius , fahr);
+ 	celsius = celsius + step;
+ }
 }
