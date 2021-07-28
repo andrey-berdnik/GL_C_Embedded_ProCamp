@@ -7,39 +7,46 @@ typedef struct
   float Price;
 } line;
 
-void readData (line * lines, int size);
-void printData (line * lines, int size);
+void readData (line *rows, unsigned int size);
+void printData (line *rows, unsigned int size);
 void showPrintfHelp();
 
 int main ()
 {
-  line lines[3];
+  line rows[3];
   //showPrintfHelp();
-  readData (lines, (int)(sizeof(lines) / sizeof(line)));
-  printData (lines, (int)(sizeof(lines) / sizeof(line)));
+  readData (rows, (unsigned int)(sizeof(rows) / sizeof(line)));
+  printData (rows, (unsigned int)(sizeof(rows) / sizeof(line)));
+
   return 0;
 }
 
-void readData (line * lines, int size)
+void readData (line *rows, unsigned int size)
 { 
+  if (rows == NULL || size==0 )
+  {return;}
+
   printf ("------------------------------------------------------\n");
   printf ("Enter CPU title, rate and price using spaces as a delimiter\n");
   printf ("------------------------------------------------------\n");
   for (int i = 0; i <= size - 1; i++)
-    {
-      scanf ("%s %d %f", lines[i].Name, &lines[i].Mark, &lines[i].Price);
+    { 
+      scanf ("%s %d %f", rows[i].Name, &rows[i].Mark, &rows[i].Price);
     }
 }
 
-void printData (line * lines, int size)
+void printData (line *rows, unsigned int size)
 {
+  if (rows == NULL || size==0 )
+  {return;}
+
   printf ("------------------------------------------------------\n");
   printf ("|%-31s|%8s|%11s|\n", "CPU", "Rate", "Price");
   printf ("------------------------------------------------------\n");
   for (int i = 0; i <= 2; i++)
     {
-      printf ("|%-31s|%8i|%11.2f|\n", lines[i].Name, lines[i].Mark,
-	      lines[i].Price);
+      printf ("|%-31s|%8i|%11.2f|\n", rows[i].Name, rows[i].Mark,
+	      rows[i].Price);
     }
   printf ("------------------------------------------------------\n");
 }
