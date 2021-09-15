@@ -28,28 +28,47 @@ cState CabinBrackeGetStatus()
     return CabinBrakeStatus;
 }
 
+static H_HAL_trigger_CB MotorSpeedOff;
+static H_HAL_trigger_CB MotorLowSpeedDown;
+
+static H_HAL_trigger_CB FloorChanged;
+static H_HAL_trigger_CB PositionChanged;
+
 void processLimitSwitchesCabinFloorHigh()
 {
 
-    if (current_position == e_CabinPositionLow && current_floor > 1)
-    {
-        current_floor--;
-    }
+
     current_position = e_CabinPositionHigh;
+    PositionChanged();
 }
 
 void processLimitSwitchesCabinFloor()
 {
+    
+    
+    if (current_position == e_CabinPositionLow && current_floor < 3)
+    {
+        current_floor++;
+        FloorChanged();
+    }
+
+    if (current_position == e_CabinPositionHigh   && current_floor > 1)
+    {
+        current_floor--;
+        FloorChanged();
+    }
+
+
     current_position = e_CabinPositionFloor;
+    PositionChanged();
+
 }
 
 void processLimitSwitchesCabinFloorLow()
 {
-    if (current_position == e_CabinPositionHigh && current_floor < 3)
-    {
-        current_floor++;
-    }
+
     current_position = e_CabinPositionLow;
+    PositionChanged();
 }
 
 void CabinSet(int floor, positionType state)
@@ -58,9 +77,6 @@ void CabinSet(int floor, positionType state)
     current_floor = floor;
     current_position = state;
 }
-
-static H_HAL_trigger_CB MotorSpeedOff;
-static H_HAL_trigger_CB MotorLowSpeedDown;
 
 void processLimitSwitchesCabinMax()
 {
@@ -77,10 +93,15 @@ void processLimitSwitchesCabinMin()
 }
 
 void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
-               H_HAL_trigger_CB MotorLowSpeedDown_CB)
+               H_HAL_trigger_CB MotorLowSpeedDown_CB,
+               H_HAL_trigger_CB FloorChanged_CB,
+               H_HAL_trigger_CB PositionChanged_CB)
 {
     MotorSpeedOff = MotorSpeedOff_CB;
     MotorLowSpeedDown = MotorLowSpeedDown_CB;
+
+    FloorChanged = FloorChanged_CB;
+    PositionChanged = PositionChanged_CB;
 
     HAL_LimitSwitchesCabinFloorHigh_set(processLimitSwitchesCabinFloorHigh);
     HAL_LimitSwitchesCabinFloor_CB_set(processLimitSwitchesCabinFloor);
@@ -105,7 +126,7 @@ int CabinGetCurrentFloor()
     return current_floor;
 }
 
-
-positionType CabinGetCurrenPosition() {
+positionType CabinGetCurrenPosition()
+{
     return current_position;
 }
