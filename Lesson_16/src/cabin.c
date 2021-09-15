@@ -30,6 +30,7 @@ cState CabinBrackeGetStatus()
 
 static H_HAL_trigger_CB MotorSpeedOff;
 static H_HAL_trigger_CB MotorLowSpeedDown;
+static H_HAL_trigger_CB MotorLowSpeedUp;
 
 static H_HAL_trigger_CB FloorChanged;
 static H_HAL_trigger_CB PositionChanged;
@@ -37,38 +38,45 @@ static H_HAL_trigger_CB PositionChanged;
 void processLimitSwitchesCabinFloorHigh()
 {
 
-
     current_position = e_CabinPositionHigh;
     PositionChanged();
 }
 
 void processLimitSwitchesCabinFloor()
 {
-    
-    
-    if (current_position == e_CabinPositionLow && current_floor < 3)
+    if (current_floor == 0)
     {
-        current_floor++;
-        FloorChanged();
+        current_floor = 1;
+        MotorSpeedOff();
+        CabinBrackeEnable();
     }
-
-    if (current_position == e_CabinPositionHigh   && current_floor > 1)
+    else
     {
-        current_floor--;
-        FloorChanged();
+
+        if (current_position == e_CabinPositionLow && current_floor < 3)
+        {
+            current_floor++;
+            FloorChanged();
+        }
+
+        if (current_position == e_CabinPositionHigh && current_floor > 1)
+        {
+            current_floor--;
+            FloorChanged();
+        }
+
+        current_position = e_CabinPositionFloor;
+        PositionChanged();
     }
-
-
-    current_position = e_CabinPositionFloor;
-    PositionChanged();
-
 }
 
 void processLimitSwitchesCabinFloorLow()
 {
-
-    current_position = e_CabinPositionLow;
-    PositionChanged();
+    if (current_floor != 0)
+    {
+        current_position = e_CabinPositionLow;
+        PositionChanged();
+    }
 }
 
 void CabinSet(int floor, positionType state)
@@ -87,18 +95,20 @@ void processLimitSwitchesCabinMax()
 
 void processLimitSwitchesCabinMin()
 {
-    MotorSpeedOff();
-    CabinBrackeEnable();
+    //  MotorSpeedOff();
     CabinSet(0, e_CabinPositionMin);
+    MotorLowSpeedUp();
 }
 
 void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
                H_HAL_trigger_CB MotorLowSpeedDown_CB,
+               H_HAL_trigger_CB MotorLowSpeedUp_CB,
                H_HAL_trigger_CB FloorChanged_CB,
                H_HAL_trigger_CB PositionChanged_CB)
 {
     MotorSpeedOff = MotorSpeedOff_CB;
     MotorLowSpeedDown = MotorLowSpeedDown_CB;
+    MotorLowSpeedUp = MotorLowSpeedUp_CB;
 
     FloorChanged = FloorChanged_CB;
     PositionChanged = PositionChanged_CB;
@@ -118,6 +128,7 @@ void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
 
 void CabinMaping()
 {
+    CabinBrackeDisable();
     MotorLowSpeedDown();
 }
 

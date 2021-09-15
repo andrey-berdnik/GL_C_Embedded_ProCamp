@@ -5,7 +5,7 @@
 bool queue[4][2];
 H_HAL_trigger_CB run_queue_processing;
 
-int QueueGetNexFlour(int current_floor)
+int QueueGetNexFloor(int current_floor)
 {
     for (int i = current_floor; i <= 3; i++)
     {
