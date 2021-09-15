@@ -40,6 +40,7 @@ void MainInit()
     MotorInit();
     CabinInit(MotorSpeedOff,
               MotorLowSpeedDown,
+              MotorLowSpeedUp,
               floorChanged,
               stateChanged);
     CabinMaping();
@@ -76,7 +77,7 @@ void MainRunMoveToTargetFloor()
     if (MotorGetState() == e_MotorSpeedOff && CabinBrackeGetStatus() == e_CabinBrackeEnable) // if system do nothing
     {
         int CurrentFloor = CabinGetCurrentFloor();
-        int NextFloor = QueueGetNexFlour(CurrentFloor);
+        int NextFloor = QueueGetNexFloor(CurrentFloor);
         if (NextFloor > 0)
         {
             if (CurrentFloor < NextFloor)
@@ -99,7 +100,7 @@ void floorChanged()
 {
     positionType newPosition = CabinGetCurrenPosition();
     int current_floor = CabinGetCurrentFloor();
-    int target_floor = QueueGetNexFlour(current_floor);
+    int target_floor = QueueGetNexFloor(current_floor);
     if (current_floor == target_floor)
     {
         MotorSpeedOff();
@@ -114,9 +115,36 @@ void stateChanged()
 {
     positionType newPosition = CabinGetCurrenPosition();
     int current_floor = CabinGetCurrentFloor();
-    int taget_floor = QueueGetNexFlour(current_floor);
+    int taget_floor = QueueGetNexFloor(current_floor);
 
-    //some logic for speed_up\speed_down
+    //todo some logic for speed_up\speed_down
+
+    if (newPosition != e_CabinPositionFloor)
+    {
+        if (MovingDirection == e_MainMovingUp)
+        {
+            if ((taget_floor - current_floor) > 1)
+            {
+                MotorHighSpeedUp();
+            }
+            else if (newPosition == e_CabinPositionLow)
+            {
+                MotorLowSpeedUp();
+            }
+        }
+
+        if (MovingDirection == e_MainMovingDown)
+        {
+            if ((current_floor - taget_floor) > 1)
+            {
+                MotorHighSpeedDown();
+            }
+            else if (newPosition == e_CabinPositionHigh)
+            {
+                MotorLowSpeedDown();
+            }
+        }
+    }
 
     previosPosition = newPosition;
 }

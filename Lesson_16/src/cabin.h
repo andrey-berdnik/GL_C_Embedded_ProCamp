@@ -26,6 +26,7 @@ typedef enum
 
 void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
                H_HAL_trigger_CB MotorLowSpeedDown_CB,
+               H_HAL_trigger_CB MotorLowSpeedUp_CB,
                H_HAL_trigger_CB FloorChanged,
                H_HAL_trigger_CB StateChanged);
 

@@ -26,41 +26,41 @@ void test_press_KF3OC_to_KF1OC(void)
 {
 
     KeysFloor3OutCabin();
-    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFloor(1));
 
     KeysFloor2OutCabin();
-    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFloor(1));
 
     KeysFloor1OutCabin();
-    TEST_ASSERT_EQUAL_INT(1, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(1, QueueGetNexFloor(1));
 }
 
 void test_press_KF3IC_to_KF1IC(void)
 {
     KeysFloor3InCabin();
-    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFloor(1));
 
     KeysFloor2InCabin();
-    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFloor(1));
 
     KeysFloor1InCabin();
-    TEST_ASSERT_EQUAL_INT(1, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(1, QueueGetNexFloor(1));
 }
 
 void test_QueueManage()
 {
     QueueAppend(1);
     QueueAppend(2);
-    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFlour(3));
+    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFloor(3));
 
     QueueAppend(3);
-    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFlour(3));
+    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFloor(3));
 
     QueueDrop();
     QueueAppend(3);
     QueueAppend(2);
-    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(2, QueueGetNexFloor(1));
 
     QueueRemove(2);
-    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFlour(1));
+    TEST_ASSERT_EQUAL_INT(3, QueueGetNexFloor(1));
 }

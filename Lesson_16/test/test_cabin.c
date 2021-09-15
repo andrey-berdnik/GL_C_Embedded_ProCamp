@@ -10,11 +10,19 @@ static void motor_off()
     motor_off_count++;
 }
 
-static int motor_on_count = 0;
-static void motor_on()
+static int motor_low_down_count = 0;
+static void motor_low_down()
 {
-    motor_on_count++;
+    motor_low_down_count++;
 }
+
+
+static int motor_low_up_count = 0;
+static void motor_low_up()
+{
+    motor_low_up_count++;
+}
+
 
 
 static int floor_changed_count = 0;
@@ -34,7 +42,7 @@ void setUp(void)
 {
     setUP_cabin_hal();
     HAL_CabinBrakesOn_Expect();
-    CabinInit(motor_on, motor_off, floor_changed, position_changed);
+    CabinInit(motor_off, motor_low_down, motor_low_up, floor_changed, position_changed);
 }
 
 void tearDown(void)
@@ -98,6 +106,7 @@ void test_floor_counting()
 
 void test_cabin_maping()
 {
+    HAL_CabinBrakesOff_Expect();
     CabinMaping(); // start maping must run motor
 
     // for test case cabin was on 2 floor
@@ -105,7 +114,15 @@ void test_cabin_maping()
     LimitSwitchesCabinFloorHigh();
     LimitSwitchesCabinFloor();
     LimitSwitchesCabinFloorLow();
+
+    
     LimitSwitchesCabinMin();
 
     TEST_ASSERT(CabinGetCurrenPosition() == e_CabinPositionMin);
+
+
+    LimitSwitchesCabinFloorLow();
+    
+    HAL_CabinBrakesOn_Expect();
+    LimitSwitchesCabinFloor();
 }
