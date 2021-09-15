@@ -16,11 +16,25 @@ static void motor_on()
     motor_on_count++;
 }
 
+
+static int floor_changed_count = 0;
+static void floor_changed()
+{
+    floor_changed_count++;
+}
+
+static int position_changed_count = 0;
+static void position_changed()
+{
+    position_changed_count++;
+}
+
+
 void setUp(void)
 {
     setUP_cabin_hal();
     HAL_CabinBrakesOn_Expect();
-    CabinInit(motor_on, motor_off);
+    CabinInit(motor_on, motor_off, floor_changed, position_changed);
 }
 
 void tearDown(void)

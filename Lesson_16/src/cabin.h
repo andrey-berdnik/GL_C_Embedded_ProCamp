@@ -1,4 +1,4 @@
-#ifndef  H_CABIN
+#ifndef H_CABIN
 #define H_CABIN
 
 #include "hal.h"
@@ -14,7 +14,6 @@ void CabinBrackeDisable();
 
 cState CabinBrackeGetStatus();
 
-
 typedef enum
 {
     e_CabinPositionUknow,
@@ -25,17 +24,15 @@ typedef enum
     e_CabinPositionMax
 } positionType;
 
-
-
 void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
-               H_HAL_trigger_CB MotorLowSpeedDown_CB);
+               H_HAL_trigger_CB MotorLowSpeedDown_CB,
+               H_HAL_trigger_CB FloorChanged,
+               H_HAL_trigger_CB StateChanged);
 
 void CabinSet(int floor, positionType state);
 int CabinGetCurrentFloor();
 positionType CabinGetCurrenPosition();
 
 void CabinMaping();
-
-
 
 #endif
