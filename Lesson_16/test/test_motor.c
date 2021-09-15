@@ -3,8 +3,11 @@
 
 #include "mock_hal.h"
 
+#include  "setup_hal_cb.c"
+
 void setUp(void)
 {
+    setUp_motor_hal();
     HAL_MotorSpeedOff_Expect();
     MotorInit();
 }
@@ -67,8 +70,8 @@ void test_MotorSpeedOff()
     HAL_MotorHighSpeedDown_Expect();
     MotorHighSpeedDown();
 
-     HAL_MotorSpeedOff_Expect();
-     MotorSpeedOff();
+    HAL_MotorSpeedOff_Expect();
+    MotorSpeedOff();
 
-     TEST_ASSERT(MotorGetState() == e_MotorSpeedOff);
+    TEST_ASSERT(MotorGetState() == e_MotorSpeedOff);
 }

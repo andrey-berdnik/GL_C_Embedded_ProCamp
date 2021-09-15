@@ -9,23 +9,6 @@
 #include "queue.h"
 #include "cabin.h"
 
-void init()
-{
-    DoorInit();
-    QueueInit();
-    MotorInit();
-    CabinInit();
-
-
-    HAL_KeysStop_CB_set(processKeysStop);
-
-    QueueDrop();
-    DoorClose();
-    MotorLowSpeedDown();
-}
-
-
-
 void processKeysStop()
 {
     QueueDrop();
@@ -34,23 +17,23 @@ void processKeysStop()
     printf("Stop process initialized");
 }
 
-void loop()
+void MainInit()
 {
+    DoorInit();
+    MotorInit();
+    CabinInit(MotorSpeedOff, MotorLowSpeedDown);
+    CabinMaping();
 
-    if (CabinGetCurrentFloor() == QueueGetNexFlour(CabinGetCurrentFloor()))
-    {
-        MotorSpeedOff();
-        CabinBrackeEnable();
-        DoorOpen();
-        DoorClose();
-        QueueRemove(CabinGetCurrentFloor());
-        runMoveToTargetFloor();
-    }
+    HAL_KeysStop_CB_set(processKeysStop);
+
+    QueueDrop();
+    DoorClose();
+
+    QueueInit(MainRunMoveToTargetFloor);
 }
 
 
 
-////////////////////
 
 bool loopEnable = true;
 
@@ -68,23 +51,27 @@ void moveDown()
     MotorLowSpeedDown();
 }
 
-void runMoveToTargetFloor()
+void MainRunMoveToTargetFloor()
 {
+
     while (QueueGetNexFlour(CabinGetCurrentFloor()) != 0)
     {
-        if ((CabinGetCurrentFloor - QueueGetNexFlour(CabinGetCurrentFloor())) > 0)
-        { //need move up
-            moveUp();
-        }
-        else if ((CabinGetCurrentFloor - QueueGetNexFlour(CabinGetCurrentFloor())) < 0)
-        { //need move down
-            moveDown();
-        }
-        else
+        if (MotorGetState() == e_MotorSpeedOff && CabinBrackeGetStatus()==e_CabinBrackeEnable) // if system do nothing
         {
-            DoorClose();
-            CabinBrackeEnable();
-            //do nothing, we already on floor
+            if (CabinGetCurrentFloor() < QueueGetNexFlour(CabinGetCurrentFloor()))
+            { //need move up
+                moveUp();
+            }
+            else if (CabinGetCurrentFloor() > QueueGetNexFlour(CabinGetCurrentFloor()))
+            { //need move down
+                moveDown();
+            }
+            else
+            {
+                DoorClose();
+                CabinBrackeEnable();
+                //do nothing, we already on required floor
+            }
         }
     }
 }

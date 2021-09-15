@@ -1,34 +1,26 @@
 #include "unity.h"
 #include "cabin.h"
-
 #include "mock_hal.h"
 
-H_HAL_trigger_CB LimitSwitchesCabinFloorHigh;
-H_HAL_trigger_CB LimitSwitchesCabinFloor;
-H_HAL_trigger_CB LimitSwitchesCabinFloorLow;
+#include "setup_hal_cb.c"
 
-static void LimitSwitchesCabinFloorHigh_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
+static int motor_off_count = 0;
+static void motor_off()
 {
-    LimitSwitchesCabinFloorHigh = callback;
+    motor_off_count++;
 }
 
-static void LimitSwitchesCabinFloor_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
+static int motor_on_count = 0;
+static void motor_on()
 {
-    LimitSwitchesCabinFloor = callback;
-}
-
-static void LimitSwitchesCabinFloorLow_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
-{
-    LimitSwitchesCabinFloorLow = callback;
+    motor_on_count++;
 }
 
 void setUp(void)
 {
-    HAL_LimitSwitchesCabinFloorHigh_set_StubWithCallback(LimitSwitchesCabinFloorHigh_CB_set);
-    HAL_LimitSwitchesCabinFloor_CB_set_StubWithCallback(LimitSwitchesCabinFloor_CB_set);
-    HAL_LimitSwitchesCabinFloorLow_CB_set_StubWithCallback(LimitSwitchesCabinFloorLow_CB_set);
+    setUP_cabin_hal();
     HAL_CabinBrakesOn_Expect();
-    CabinInit();
+    CabinInit(motor_on, motor_off);
 }
 
 void tearDown(void)
@@ -73,7 +65,7 @@ void test_floor_counting()
     LimitSwitchesCabinFloorLow();
     LimitSwitchesCabinFloor();
     TEST_ASSERT_EQUAL_INT(3, CabinGetCurrentFloor());
-    
+
     LimitSwitchesCabinFloorLow();
     LimitSwitchesCabinFloorHigh();
     LimitSwitchesCabinFloor();
@@ -88,4 +80,18 @@ void test_floor_counting()
     LimitSwitchesCabinFloorHigh();
     LimitSwitchesCabinFloor();
     TEST_ASSERT_EQUAL_INT(1, CabinGetCurrentFloor());
+}
+
+void test_cabin_maping()
+{
+    CabinMaping(); // start maping must run motor
+
+    // for test case cabin was on 2 floor
+    LimitSwitchesCabinFloorLow();
+    LimitSwitchesCabinFloorHigh();
+    LimitSwitchesCabinFloor();
+    LimitSwitchesCabinFloorLow();
+    LimitSwitchesCabinMin();
+
+    TEST_ASSERT(CabinGetCurrenPosition() == e_CabinPositionMin);
 }

@@ -59,8 +59,28 @@ void CabinSet(int floor, positionType state)
     current_position = state;
 }
 
-void CabinInit()
+static H_HAL_trigger_CB MotorSpeedOff;
+static H_HAL_trigger_CB MotorLowSpeedDown;
+
+void processLimitSwitchesCabinMax()
 {
+    MotorSpeedOff();
+    CabinBrackeEnable();
+    CabinSet(4, e_CabinPositionMax);
+}
+
+void processLimitSwitchesCabinMin()
+{
+    MotorSpeedOff();
+    CabinBrackeEnable();
+    CabinSet(0, e_CabinPositionMin);
+}
+
+void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
+               H_HAL_trigger_CB MotorLowSpeedDown_CB)
+{
+    MotorSpeedOff = MotorSpeedOff_CB;
+    MotorLowSpeedDown = MotorLowSpeedDown_CB;
 
     HAL_LimitSwitchesCabinFloorHigh_set(processLimitSwitchesCabinFloorHigh);
     HAL_LimitSwitchesCabinFloor_CB_set(processLimitSwitchesCabinFloor);
@@ -75,25 +95,17 @@ void CabinInit()
     CabinSet(1, e_CabinPositionUknow);
 }
 
+void CabinMaping()
+{
+    MotorLowSpeedDown();
+}
+
 int CabinGetCurrentFloor()
 {
     return current_floor;
 }
 
-void processLimitSwitchesCabinMax()
-{
-    MotorSpeedOff();
-    CabinBrackeEnable();
-    CabinInit(4, e_CabinPositionMax);
-    QueueDrop();
-    QueueAppend(3);
-}
 
-void processLimitSwitchesCabinMin()
-{
-    MotorSpeedOff();
-    CabinBrackeEnable();
-    CabinSet(0, e_CabinPositionMin);
-    QueueDrop();
-    QueueAppend(1);
+positionType CabinGetCurrenPosition() {
+    return current_position;
 }

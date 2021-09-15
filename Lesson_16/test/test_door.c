@@ -2,24 +2,11 @@
 #include "door.h"
 #include "mock_hal.h"
 
-static H_HAL_trigger_CB LimitSwitchesDoorOpened;
-static void LimitSwitchesDoorOpened_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
-{
-    LimitSwitchesDoorOpened = callback;
-    //HAL_LimitSwitchesDoorOpened_CB_set
-}
-
-static H_HAL_trigger_CB LimitSwitchesDoorClosed;
-static void LimitSwitchesDoorClosed_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
-{
-    LimitSwitchesDoorClosed = callback;
-    //HAL_LimitSwitchesDoorOpened_CB_set
-}
+#include "setup_hal_cb.c"
 
 void setUp(void)
 {
-    HAL_LimitSwitchesDoorOpened_CB_set_StubWithCallback(LimitSwitchesDoorOpened_CB_set);
-    HAL_LimitSwitchesDoorClosed_CB_set_StubWithCallback(LimitSwitchesDoorClosed_CB_set);
+    setUP_door_hal();
     DoorInit();
 }
 
@@ -29,7 +16,7 @@ void tearDown(void)
 
 void test_door_opening(void)
 {
-    TEST_ASSERT(DoorGetState()==e_DoorUknow);
+    TEST_ASSERT(DoorGetState() == e_DoorUknow);
     //Open door
     HAL_DoorActuatorsOpening_Expect();
     DoorOpen();
@@ -37,12 +24,12 @@ void test_door_opening(void)
     HAL_DoorActuatorsOff_Expect();
     LimitSwitchesDoorOpened();
 
-    TEST_ASSERT(DoorGetState()==e_DoorOpened);
+    TEST_ASSERT(DoorGetState() == e_DoorOpened);
 }
 
 void test_door_open_and_close_door(void)
 {
-    TEST_ASSERT(DoorGetState()==e_DoorUknow);
+    TEST_ASSERT(DoorGetState() == e_DoorUknow);
     //Open door
     HAL_DoorActuatorsOpening_Expect();
     DoorOpen();
@@ -50,7 +37,7 @@ void test_door_open_and_close_door(void)
     HAL_DoorActuatorsOff_Expect();
     LimitSwitchesDoorOpened();
 
-    TEST_ASSERT(DoorGetState()==e_DoorOpened);
+    TEST_ASSERT(DoorGetState() == e_DoorOpened);
 
     //Close door
     HAL_DoorActuatorsClosing_Expect();
@@ -59,5 +46,5 @@ void test_door_open_and_close_door(void)
     HAL_DoorActuatorsOff_Expect();
     LimitSwitchesDoorClosed();
 
-    TEST_ASSERT(DoorGetState()==e_DoorClosed);
+    TEST_ASSERT(DoorGetState() == e_DoorClosed);
 }

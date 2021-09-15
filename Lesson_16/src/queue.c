@@ -3,6 +3,7 @@
 #include "hal.h"
 
 bool queue[4][2];
+H_HAL_trigger_CB run_queue_processing;
 
 int QueueGetNexFlour(int current_floor)
 {
@@ -28,27 +29,33 @@ int QueueGetNexFlour(int current_floor)
 void processKeysFloor3InCabin()
 {
     queue[3][0] = true;
+    run_queue_processing();
 }
 void processKeysFloor2InCabin()
 {
     queue[2][0] = true;
+    run_queue_processing();
 }
 void processKeysFloor1InCabin()
 {
     queue[1][0] = true;
+    run_queue_processing();
 }
 
 void processKeysFloor1OutCabin()
 {
     queue[1][1] = true;
+    run_queue_processing();
 }
 void processKeysFloor2OutCabin()
 {
     queue[2][1] = true;
+    run_queue_processing();
 }
 void processKeysFloor3OutCabin()
 {
     queue[3][1] = true;
+    run_queue_processing();
 }
 
 void QueueDrop()
@@ -66,20 +73,22 @@ void QueueRemove(int floor)
     queue[floor][1] = false;
 }
 
-void QueueInit()
+void QueueInit(H_HAL_trigger_CB rqp)
 {
-
+    run_queue_processing = rqp;
     QueueDrop();
     HAL_KeysFloor3InCabin_CB_set(processKeysFloor3InCabin);
     HAL_KeysFloor2InCabin_CB_set(processKeysFloor2InCabin);
     HAL_KeysFloor1InCabin_CB_set(processKeysFloor1InCabin);
-    
+
     HAL_KeysFloor1OutCabin_CB_set(processKeysFloor1OutCabin);
     HAL_KeysFloor2OutCabin_CB_set(processKeysFloor2OutCabin);
     HAL_KeysFloor3OutCabin_CB_set(processKeysFloor3OutCabin);
 }
 
-void QueueAppend(int floor) {
-    queue[floor][0]=true;
-    queue[floor][1]=true;
+void QueueAppend(int floor)
+{
+    queue[floor][0] = true;
+    queue[floor][1] = true;
+    run_queue_processing();
 }
