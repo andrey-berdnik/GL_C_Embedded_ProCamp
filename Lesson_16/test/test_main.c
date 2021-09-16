@@ -1,5 +1,6 @@
-#include "unity.h"
 #include "main.h"
+
+#include "support/setup_main_cb.c"
 
 #include "mock_hal.h"
 #include "mock_motor.h"
