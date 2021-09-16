@@ -13,7 +13,7 @@ void tearDown(void)
 {
 }
 
-void test_door_opening(void)
+void test_door_opening_process(void)
 {
     TEST_ASSERT(DoorGetState() == e_DoorUknow);
     //Open door
@@ -26,7 +26,7 @@ void test_door_opening(void)
     TEST_ASSERT(DoorGetState() == e_DoorOpened);
 }
 
-void test_door_open_and_close_door(void)
+void test_door_open_and_close_door_process(void)
 {
     TEST_ASSERT(DoorGetState() == e_DoorUknow);
     //Open door
