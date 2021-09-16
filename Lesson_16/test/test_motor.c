@@ -1,9 +1,8 @@
-#include "unity.h"
-#include "motor.h"
+#include "StateMachine/Motor/motor.h"
 
 #include "mock_hal.h"
 
-#include  "setup_hal_cb.c"
+#include  "support/setup_motor_cb.c"
 
 void setUp(void)
 {

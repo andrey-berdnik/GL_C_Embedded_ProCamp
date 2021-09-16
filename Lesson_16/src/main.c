@@ -4,10 +4,10 @@
 
 #include "main.h"
 
-#include "motor.h"
-#include "door.h"
-#include "queue.h"
-#include "cabin.h"
+#include "StateMachine/Motor/motor.h"
+#include "StateMachine/Door/door.h"
+#include "StateMachine/Queue/queue.h"
+#include "StateMachine/Cabin/cabin.h"
 
 void floorChanged();
 void stateChanged();

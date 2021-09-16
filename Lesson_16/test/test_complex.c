@@ -8,7 +8,11 @@
 
 #include "mock_hal.h"
 
-#include "setup_hal_cb.c"
+#include "support/setup_cabin_cb.c"
+#include "support/setup_door_cb.c"
+#include "support/setup_main_cb.c"
+#include "support/setup_motor_cb.c"
+#include "support/setup_queue_cb.c"
 
 void setUp(void)
 {

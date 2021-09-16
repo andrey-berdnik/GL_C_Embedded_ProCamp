@@ -1,8 +1,7 @@
-#include "unity.h"
-#include "cabin.h"
+#include "StateMachine/Cabin/cabin.h"
 #include "mock_hal.h"
 
-#include "setup_hal_cb.c"
+#include "support/setup_cabin_cb.c"
 
 static int motor_off_count = 0;
 static void motor_off()

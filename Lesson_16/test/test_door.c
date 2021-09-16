@@ -1,8 +1,7 @@
-#include "unity.h"
-#include "door.h"
+#include "StateMachine/Door/door.h"
 #include "mock_hal.h"
 
-#include "setup_hal_cb.c"
+#include "support/setup_door_cb.c"
 
 void setUp(void)
 {

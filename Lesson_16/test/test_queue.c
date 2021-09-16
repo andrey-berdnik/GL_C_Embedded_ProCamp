@@ -1,9 +1,8 @@
-#include "unity.h"
-#include "queue.h"
+#include "StateMachine/Queue/queue.h"
 
 #include "mock_hal.h"
 
-#include "setup_hal_cb.c"
+#include "support/setup_queue_cb.c"
 
 static int run_quite_processing_count = 0;
 static void run_quite_processing()
