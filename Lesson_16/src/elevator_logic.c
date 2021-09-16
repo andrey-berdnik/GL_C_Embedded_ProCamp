@@ -1,7 +1,7 @@
 #include "stdio.h"
 #include "stdbool.h"
 
-#include "main.h"
+#include "elevator_logic.h"
 
 #include "StateMachine/Motor/motor.h"
 #include "StateMachine/Door/door.h"
@@ -39,7 +39,7 @@ static void processKeysStop(void)
     MovingDirection = e_MainMovingStop;
 }
 
-void MainInit(void)
+void ElevatorLogicInit(void)
 {
     DoorInit();
     MotorInit();
@@ -55,7 +55,7 @@ void MainInit(void)
     QueueDrop();
     DoorClose();
 
-    QueueInit(MainRunMoveToTargetFloor);
+    QueueInit(ElevatorLogicRunMoveToTargetFloor);
 }
 
 
@@ -76,7 +76,7 @@ static void moveDown(void)
     MovingDirection = e_MainMovingDown;
 }
 
-void MainRunMoveToTargetFloor(void)
+void ElevatorLogicRunMoveToTargetFloor(void)
 {
 
     if (MotorGetState() == e_MotorSpeedOff && CabinBrackeGetStatus() == e_CabinBrackeEnable) // if system do nothing

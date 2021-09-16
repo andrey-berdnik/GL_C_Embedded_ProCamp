@@ -50,7 +50,7 @@ void tearDown(void)
     position_changed_count = 0;
 }
 
-void test_CabinBrakes(void)
+void test_CabinBrakes_function(void)
 {
     TEST_ASSERT(CabinBrackeGetStatus() == e_CabinBrackeEnable);
 
@@ -70,7 +70,7 @@ void test_CabinBrakes(void)
     TEST_ASSERT(CabinBrackeGetStatus() == e_CabinBrackeDisable);
 }
 
-void test_floor_counting(void)
+void test_floor_counting_process(void)
 {
     CabinSet(1, e_CabinPositionFloor);
 
@@ -105,7 +105,29 @@ void test_floor_counting(void)
     TEST_ASSERT_EQUAL_INT(1, CabinGetCurrentFloor());
 }
 
-void test_cabin_maping(void)
+void test_cabin_maping_function(void)
+{
+    HAL_CabinBrakesOff_Expect();
+    CabinMaping(); // start maping must run motor
+
+    // for test case cabin was on 2 floor
+    LimitSwitchesCabinFloorLow();
+    LimitSwitchesCabinFloorHigh();
+    LimitSwitchesCabinFloor();
+    LimitSwitchesCabinFloorLow();
+
+    LimitSwitchesCabinMin();
+
+    TEST_ASSERT(CabinGetCurrenPosition() == e_CabinPositionMin);
+
+    LimitSwitchesCabinFloorLow();
+
+    HAL_CabinBrakesOn_Expect();
+    LimitSwitchesCabinFloor();
+}
+
+
+void test_cabin_maping_process(void)
 {
     HAL_CabinBrakesOff_Expect();
     CabinMaping(); // start maping must run motor

@@ -1,5 +1,5 @@
 
-#include "main.h"
+#include "elevator_logic.h"
 
 #include "motor.h"
 #include "door.h"
@@ -30,7 +30,7 @@ void setUp(void)
 
   HAL_DoorActuatorsClosing_Expect();
 
-  MainInit();
+  ElevatorLogicInit();
 
   HAL_MotorLowSpeedUp_Expect();
   LimitSwitchesCabinMin();
@@ -46,7 +46,7 @@ void tearDown(void)
 {
 }
 
-void test_1_to_2()
+void test_movin_on_call_from_1_to_2_floor_proccess()
 {
 
   HAL_DoorActuatorsClosing_Expect();
@@ -68,7 +68,7 @@ void test_1_to_2()
   LimitSwitchesDoorOpened();
 }
 
-void test_1_to_3()
+void test_movin_on_call_from_1_to_3_floor_proccess()
 {
 
   HAL_DoorActuatorsClosing_Expect();
@@ -99,7 +99,7 @@ void test_1_to_3()
 }
 
 
-void test_1_to_3_pause_3_to_2()
+void test__movin_on_call_from_1_to_3_pause_3_to_2_floor_proccess()
 {
 
   HAL_DoorActuatorsClosing_Expect();
