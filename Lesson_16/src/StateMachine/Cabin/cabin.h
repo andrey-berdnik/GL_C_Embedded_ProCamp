@@ -1,18 +1,13 @@
 #ifndef H_CABIN
 #define H_CABIN
-
 #include "hal.h"
+
 typedef enum
 {
     e_CabinBrackeUknow,
     e_CabinBrackeEnable,
     e_CabinBrackeDisable
 } cState;
-
-void CabinBrackeEnable();
-void CabinBrackeDisable();
-
-cState CabinBrackeGetStatus();
 
 typedef enum
 {
@@ -30,10 +25,13 @@ void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
                H_HAL_trigger_CB FloorChanged,
                H_HAL_trigger_CB StateChanged);
 
+void CabinBrackeEnable(void);
+void CabinBrackeDisable(void);
 void CabinSet(int floor, positionType state);
-int CabinGetCurrentFloor();
-positionType CabinGetCurrenPosition();
+void CabinMaping(void);
 
-void CabinMaping();
+int CabinGetCurrentFloor(void);
+cState CabinBrackeGetStatus(void);
+positionType CabinGetCurrenPosition(void);
 
-#endif
+#endif //H_CABIN

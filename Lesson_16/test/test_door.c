@@ -1,7 +1,7 @@
 #include "StateMachine/Door/door.h"
 #include "mock_hal.h"
 
-#include "support/setup_door_cb.c"
+#include "support/setup_door_cb.h"
 
 void setUp(void)
 {

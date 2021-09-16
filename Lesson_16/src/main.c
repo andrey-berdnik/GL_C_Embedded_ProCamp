@@ -8,12 +8,6 @@
 #include "StateMachine/Queue/queue.h"
 #include "StateMachine/Cabin/cabin.h"
 
-void floorChanged();
-void stateChanged();
-
-static int previos_floor = 0;
-static positionType previosPosition = e_CabinPositionUknow;
-
 typedef enum
 {
     e_MainMovingUknow,
@@ -22,9 +16,21 @@ typedef enum
     e_MainMovingDown
 } e_MainMovingDirection;
 
+static int previos_floor = 0;
+static positionType previosPosition = e_CabinPositionUknow;
 static e_MainMovingDirection MovingDirection = e_MainMovingUknow;
 
-void processKeysStop()
+static void floorChanged(void);
+static void stateChanged(void);
+static void processKeysStop(void);
+static void moveUp(void);
+static void moveDown(void);
+static void floorChanged(void);
+static void stateChanged(void);
+
+
+
+static void processKeysStop(void)
 {
     QueueDrop();
     MotorSpeedOff();
@@ -33,7 +39,7 @@ void processKeysStop()
     MovingDirection = e_MainMovingStop;
 }
 
-void MainInit()
+void MainInit(void)
 {
     DoorInit();
     MotorInit();
@@ -52,9 +58,9 @@ void MainInit()
     QueueInit(MainRunMoveToTargetFloor);
 }
 
-bool loopEnable = true;
 
-void moveUp()
+
+static void moveUp(void)
 {
     DoorClose();
     CabinBrackeDisable();
@@ -62,7 +68,7 @@ void moveUp()
     MovingDirection = e_MainMovingUp;
 }
 
-void moveDown()
+static void moveDown(void)
 {
     DoorClose();
     CabinBrackeDisable();
@@ -70,7 +76,7 @@ void moveDown()
     MovingDirection = e_MainMovingDown;
 }
 
-void MainRunMoveToTargetFloor()
+void MainRunMoveToTargetFloor(void)
 {
 
     if (MotorGetState() == e_MotorSpeedOff && CabinBrackeGetStatus() == e_CabinBrackeEnable) // if system do nothing
@@ -95,7 +101,7 @@ void MainRunMoveToTargetFloor()
     }
 }
 
-void floorChanged()
+static void floorChanged(void)
 {
     positionType newPosition = CabinGetCurrenPosition();
     int current_floor = CabinGetCurrentFloor();
@@ -110,7 +116,7 @@ void floorChanged()
     previos_floor = current_floor;
 }
 
-void stateChanged()
+static void stateChanged(void)
 {
     positionType newPosition = CabinGetCurrenPosition();
     int current_floor = CabinGetCurrentFloor();

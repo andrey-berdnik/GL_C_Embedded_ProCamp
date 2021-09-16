@@ -2,7 +2,7 @@
 
 #include "mock_hal.h"
 
-#include "support/setup_queue_cb.c"
+#include "support/setup_queue_cb.h"
 
 static int run_quite_processing_count = 0;
 static void run_quite_processing()
@@ -13,12 +13,12 @@ static void run_quite_processing()
 void setUp(void)
 {
     setUp_queue_hal();
-
     QueueInit(run_quite_processing);
 }
 
 void tearDown(void)
 {
+    run_quite_processing_count = 0;
 }
 
 void test_press_KF3OC_to_KF1OC(void)
