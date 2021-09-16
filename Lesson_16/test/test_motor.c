@@ -2,7 +2,7 @@
 
 #include "mock_hal.h"
 
-#include  "support/setup_motor_cb.c"
+#include  "support/setup_motor_cb.h"
 
 void setUp(void)
 {

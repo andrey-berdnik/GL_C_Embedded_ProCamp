@@ -3,12 +3,12 @@
 
 mState motorState = e_MotorSpeedOff;
 
-mState MotorGetState()
+mState MotorGetState(void)
 {
     return motorState;
 }
 
-void MotorLowSpeedUp()
+void MotorLowSpeedUp(void)
 {
     if (motorState != e_MotorLowSpeedUp)
     {
@@ -16,7 +16,7 @@ void MotorLowSpeedUp()
         HAL_MotorLowSpeedUp();
     }
 }
-void MotorHighSpeedUp()
+void MotorHighSpeedUp(void)
 {
     if (motorState != e_MotorHighSpeedUp)
     {
@@ -24,7 +24,7 @@ void MotorHighSpeedUp()
         HAL_MotorHighSpeedUp();
     }
 }
-void MotorLowSpeedDown()
+void MotorLowSpeedDown(void)
 {
     if (motorState != e_MotorLowSpeedDown)
     {
@@ -32,7 +32,7 @@ void MotorLowSpeedDown()
         HAL_MotorLowSpeedDown();
     }
 }
-void MotorHighSpeedDown()
+void MotorHighSpeedDown(void)
 {
     if (motorState != e_MotorHighSpeedDown)
     {
@@ -40,7 +40,7 @@ void MotorHighSpeedDown()
         HAL_MotorHighSpeedDown();
     }
 }
-void MotorSpeedOff()
+void MotorSpeedOff(void)
 {
     if (motorState != e_MotorSpeedOff)
     {
@@ -49,7 +49,7 @@ void MotorSpeedOff()
     }
 }
 
-void MotorInit()
+void MotorInit(void)
 {
     motorState = e_MotorSpeedOff;
     HAL_MotorSpeedOff();

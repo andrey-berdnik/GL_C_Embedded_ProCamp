@@ -9,15 +9,15 @@ typedef enum
     e_MotorHighSpeedDown
 } mState;
 
-mState MotorGetState();
+mState MotorGetState(void);
 
-void MotorLowSpeedUp();
-void MotorHighSpeedUp();
-void MotorLowSpeedDown();
-void MotorHighSpeedDown();
-void MotorSpeedOff();
-void MotorInit();
+void MotorLowSpeedUp(void);
+void MotorHighSpeedUp(void);
+void MotorLowSpeedDown(void);
+void MotorHighSpeedDown(void);
+void MotorSpeedOff(void);
+void MotorInit(void);
 
 
 
-#endif
+#endif //H_MOTOR

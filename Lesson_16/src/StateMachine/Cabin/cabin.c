@@ -5,7 +5,19 @@ static cState CabinBrakeStatus = e_CabinBrackeUknow;
 static int current_floor = 1;
 static positionType current_position = e_CabinPositionUknow;
 
-void CabinBrackeEnable()
+static H_HAL_trigger_CB MotorSpeedOff;
+static H_HAL_trigger_CB MotorLowSpeedDown;
+static H_HAL_trigger_CB MotorLowSpeedUp;
+static H_HAL_trigger_CB FloorChanged;
+static H_HAL_trigger_CB PositionChanged;
+
+static void processLimitSwitchesCabinFloorHigh(void);
+static void processLimitSwitchesCabinFloor(void);
+static void processLimitSwitchesCabinFloorLow(void);
+static void processLimitSwitchesCabinMax(void);
+static void processLimitSwitchesCabinMin(void);
+
+void CabinBrackeEnable(void)
 {
     if (CabinBrakeStatus != e_CabinBrackeEnable)
     {
@@ -14,7 +26,7 @@ void CabinBrackeEnable()
     }
 }
 
-void CabinBrackeDisable()
+void CabinBrackeDisable(void)
 {
     if (CabinBrakeStatus != e_CabinBrackeDisable)
     {
@@ -23,26 +35,19 @@ void CabinBrackeDisable()
     }
 }
 
-cState CabinBrackeGetStatus()
+cState CabinBrackeGetStatus(void)
 {
     return CabinBrakeStatus;
 }
 
-static H_HAL_trigger_CB MotorSpeedOff;
-static H_HAL_trigger_CB MotorLowSpeedDown;
-static H_HAL_trigger_CB MotorLowSpeedUp;
-
-static H_HAL_trigger_CB FloorChanged;
-static H_HAL_trigger_CB PositionChanged;
-
-void processLimitSwitchesCabinFloorHigh()
+static void processLimitSwitchesCabinFloorHigh(void)
 {
 
     current_position = e_CabinPositionHigh;
     PositionChanged();
 }
 
-void processLimitSwitchesCabinFloor()
+static void processLimitSwitchesCabinFloor(void)
 {
     if (current_floor == 0)
     {
@@ -70,7 +75,7 @@ void processLimitSwitchesCabinFloor()
     }
 }
 
-void processLimitSwitchesCabinFloorLow()
+static void processLimitSwitchesCabinFloorLow(void)
 {
     if (current_floor != 0)
     {
@@ -86,14 +91,14 @@ void CabinSet(int floor, positionType state)
     current_position = state;
 }
 
-void processLimitSwitchesCabinMax()
+static void processLimitSwitchesCabinMax(void)
 {
     MotorSpeedOff();
     CabinBrackeEnable();
     CabinSet(4, e_CabinPositionMax);
 }
 
-void processLimitSwitchesCabinMin()
+static void processLimitSwitchesCabinMin(void)
 {
     CabinSet(0, e_CabinPositionMin);
     MotorLowSpeedUp();
@@ -125,18 +130,18 @@ void CabinInit(H_HAL_trigger_CB MotorSpeedOff_CB,
     CabinSet(1, e_CabinPositionUknow);
 }
 
-void CabinMaping()
+void CabinMaping(void)
 {
     CabinBrackeDisable();
     MotorLowSpeedDown();
 }
 
-int CabinGetCurrentFloor()
+int CabinGetCurrentFloor(void)
 {
     return current_floor;
 }
 
-positionType CabinGetCurrenPosition()
+positionType CabinGetCurrenPosition(void)
 {
     return current_position;
 }

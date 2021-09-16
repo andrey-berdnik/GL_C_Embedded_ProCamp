@@ -5,6 +5,14 @@
 bool queue[4][2];
 H_HAL_trigger_CB run_queue_processing;
 
+static void processKeysFloor3InCabin(void);
+static void processKeysFloor2InCabin(void);
+static void processKeysFloor1InCabin(void);
+static void processKeysFloor1OutCabin(void);
+static void processKeysFloor2OutCabin(void);
+static void processKeysFloor3OutCabin(void);
+
+
 int QueueGetNexFloor(int current_floor)
 {
     for (int i = current_floor; i <= 3; i++)
@@ -26,39 +34,39 @@ int QueueGetNexFloor(int current_floor)
     return 0;
 }
 
-void processKeysFloor3InCabin()
+static void processKeysFloor3InCabin(void)
 {
     queue[3][0] = true;
     run_queue_processing();
 }
-void processKeysFloor2InCabin()
+static void processKeysFloor2InCabin(void)
 {
     queue[2][0] = true;
     run_queue_processing();
 }
-void processKeysFloor1InCabin()
+static void processKeysFloor1InCabin(void)
 {
     queue[1][0] = true;
     run_queue_processing();
 }
 
-void processKeysFloor1OutCabin()
+static void processKeysFloor1OutCabin(void)
 {
     queue[1][1] = true;
     run_queue_processing();
 }
-void processKeysFloor2OutCabin()
+static void processKeysFloor2OutCabin(void)
 {
     queue[2][1] = true;
     run_queue_processing();
 }
-void processKeysFloor3OutCabin()
+static void processKeysFloor3OutCabin(void)
 {
     queue[3][1] = true;
     run_queue_processing();
 }
 
-void QueueDrop()
+void QueueDrop(void)
 {
     for (int i = 1; i <= 3; i++)
     {

@@ -69,6 +69,7 @@
 # You will need to have gcov and gcovr both installed to make it work.
 # For more information on these options, see docs in plugins/gcov
 :gcov:
+  :html_report: true
   :reports:
     - HtmlDetailed
   :gcovr:
