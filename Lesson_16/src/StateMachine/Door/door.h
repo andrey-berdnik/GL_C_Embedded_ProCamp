@@ -10,9 +10,9 @@ typedef enum
     e_DoorClosing
 } dState;
 
-void DoorInit(); //tested
-void DoorOpen(); //tested
-void DoorClose(); //tested
-dState DoorGetState(); //tested
+void DoorInit(); 
+void DoorOpen(); 
+void DoorClose(); 
+dState DoorGetState(); 
 
 #endif

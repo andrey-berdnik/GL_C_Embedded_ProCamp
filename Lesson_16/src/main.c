@@ -1,4 +1,3 @@
-//#include "hal.h"
 #include "stdio.h"
 #include "stdbool.h"
 
@@ -81,11 +80,11 @@ void MainRunMoveToTargetFloor()
         if (NextFloor > 0)
         {
             if (CurrentFloor < NextFloor)
-            { //need move up
+            { 
                 moveUp();
             }
             else if (CurrentFloor > NextFloor)
-            { //need move down
+            { 
                 moveDown();
             }
             else
@@ -116,8 +115,6 @@ void stateChanged()
     positionType newPosition = CabinGetCurrenPosition();
     int current_floor = CabinGetCurrentFloor();
     int taget_floor = QueueGetNexFloor(current_floor);
-
-    //todo some logic for speed_up\speed_down
 
     if (newPosition != e_CabinPositionFloor)
     {

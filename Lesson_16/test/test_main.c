@@ -1,68 +1,143 @@
+
 #include "main.h"
 
-#include "support/setup_main_cb.c"
+#include "motor.h"
+#include "door.h"
+#include "queue.h"
+#include "cabin.h"
 
 #include "mock_hal.h"
-#include "mock_motor.h"
-#include "mock_door.h"
-#include "mock_queue.h"
-#include "mock_cabin.h"
+
+#include "support/setup_cabin_cb.c"
+#include "support/setup_door_cb.c"
+#include "support/setup_main_cb.c"
+#include "support/setup_motor_cb.c"
+#include "support/setup_queue_cb.c"
 
 void setUp(void)
 {
+  setUp_motor_hal();
+  setUP_door_hal();
+  setUp_queue_hal();
+  setUP_cabin_hal();
+  setUp_main_hal();
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+
+  HAL_CabinBrakesOff_Expect();
+  HAL_MotorLowSpeedDown_Expect();
+
+  HAL_DoorActuatorsClosing_Expect();
+
+  MainInit();
+
+  HAL_MotorLowSpeedUp_Expect();
+  LimitSwitchesCabinMin();
+
+  LimitSwitchesCabinFloorLow();
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+  LimitSwitchesCabinFloor();
 }
 
 void tearDown(void)
 {
 }
 
-void test_no_quite(void)
+void test_1_to_2()
 {
-    MotorGetState_ExpectAndReturn(e_MotorSpeedOff);
-    CabinBrackeGetStatus_ExpectAndReturn(e_CabinBrackeEnable);
 
-    // Determinate dirrection  (check to UP)
-    CabinGetCurrentFloor_ExpectAndReturn(1); // get current for compare
-    QueueGetNexFlour_ExpectAndReturn(1, 0);
+  HAL_DoorActuatorsClosing_Expect();
+  HAL_CabinBrakesOff_Expect();
+  HAL_MotorLowSpeedUp_Expect();
+  KeysFloor2OutCabin();
 
-    MainRunMoveToTargetFloor();
+  LimitSwitchesCabinFloorHigh(); //1 to 2
+
+  LimitSwitchesCabinFloorLow();
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+  HAL_DoorActuatorsOpening_Expect();
+
+  LimitSwitchesCabinFloor();
+
+  HAL_DoorActuatorsOff_Expect();
+  LimitSwitchesDoorOpened();
 }
 
-// I don't like the way I made the tests.
-//But I like the way I made the code, so I won't adjust the code for tests.
-
-void test_move_from_1_to_2(void)
+void test_1_to_3()
 {
-    // Check that task not in progress
-    MotorGetState_ExpectAndReturn(e_MotorSpeedOff);
-    CabinBrackeGetStatus_ExpectAndReturn(e_CabinBrackeEnable);
 
-    // Determinate dirrection  (now 1, need to 2, than UP)
-    CabinGetCurrentFloor_ExpectAndReturn(1); // get current for compare
-    QueueGetNexFlour_ExpectAndReturn(1, 2);
+  HAL_DoorActuatorsClosing_Expect();
+  HAL_CabinBrakesOff_Expect();
+  HAL_MotorLowSpeedUp_Expect();
+  KeysFloor3OutCabin();
 
-    //Start moving
-    DoorClose_Expect();
-    CabinBrackeDisable_Expect();
-    MotorLowSpeedUp_Expect();
+  HAL_MotorHighSpeedUp_Expect();
+  
+  LimitSwitchesCabinFloorHigh(); //1 to 2
+  LimitSwitchesCabinFloorLow();
+  
+  LimitSwitchesCabinFloor();  //2 
 
-    MainRunMoveToTargetFloor();
+
+  LimitSwitchesCabinFloorHigh(); //2 to 3
+  HAL_MotorLowSpeedUp_Expect();
+  LimitSwitchesCabinFloorLow(); 
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+  HAL_DoorActuatorsOpening_Expect();
+  LimitSwitchesCabinFloor();  //3
+
+  HAL_DoorActuatorsOff_Expect();
+  LimitSwitchesDoorOpened();
+
 }
 
-void test_move_from_2_to_1(void)
+
+void test_1_to_3_pause_3_to_2()
 {
-    // Check that task not in progress
-    MotorGetState_ExpectAndReturn(e_MotorSpeedOff);
-    CabinBrackeGetStatus_ExpectAndReturn(e_CabinBrackeEnable);
 
-    // Determinate dirrection  (now 2, need to 1, than Down)
-    CabinGetCurrentFloor_ExpectAndReturn(2); // get current for compare
-    QueueGetNexFlour_ExpectAndReturn(2, 1);
+  HAL_DoorActuatorsClosing_Expect();
+  HAL_CabinBrakesOff_Expect();
+  HAL_MotorLowSpeedUp_Expect();
+  KeysFloor3OutCabin();
 
-    //Start moving
-    DoorClose_Expect();
-    CabinBrackeDisable_Expect();
-    MotorLowSpeedDown_Expect();
+  HAL_MotorHighSpeedUp_Expect();
+  
+  LimitSwitchesCabinFloorHigh(); //1 to 2
+  LimitSwitchesCabinFloorLow();
+  
+  LimitSwitchesCabinFloor();  //2 
 
-    MainRunMoveToTargetFloor();
+
+  LimitSwitchesCabinFloorHigh(); //2 to 3
+  HAL_MotorLowSpeedUp_Expect();
+  LimitSwitchesCabinFloorLow(); 
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+  HAL_DoorActuatorsOpening_Expect();
+  LimitSwitchesCabinFloor();  //3
+
+  HAL_DoorActuatorsOff_Expect();
+  LimitSwitchesDoorOpened();
+
+  HAL_DoorActuatorsClosing_Expect();
+  HAL_CabinBrakesOff_Expect();
+  HAL_MotorLowSpeedDown_Expect();
+  KeysFloor2InCabin();
+
+  LimitSwitchesCabinFloorLow();
+  LimitSwitchesCabinFloorHigh();
+
+  HAL_MotorSpeedOff_Expect();
+  HAL_CabinBrakesOn_Expect();
+  HAL_DoorActuatorsOpening_Expect();
+  LimitSwitchesCabinFloor();
+
 }
