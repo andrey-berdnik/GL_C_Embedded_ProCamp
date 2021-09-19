@@ -1,12 +1,14 @@
 #include "mock_hal.h"
 
 static H_HAL_trigger_CB LimitSwitchesDoorOpened;
+static H_HAL_trigger_CB LimitSwitchesDoorClosed;
+
 static void LimitSwitchesDoorOpened_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
 {
     LimitSwitchesDoorOpened = callback;
 }
 
-static H_HAL_trigger_CB LimitSwitchesDoorClosed;
+
 static void LimitSwitchesDoorClosed_CB_set(H_HAL_trigger_CB callback, int cmock_num_calls)
 {
     LimitSwitchesDoorClosed = callback;

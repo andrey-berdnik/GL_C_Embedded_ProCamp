@@ -47,6 +47,16 @@ static void processLimitSwitchesCabinFloorHigh(void)
     PositionChanged();
 }
 
+static void processLimitSwitchesCabinFloorLow(void)
+{
+    if (current_floor != 0)
+    {
+        current_position = e_CabinPositionLow;
+        PositionChanged();
+    }
+}
+
+
 static void processLimitSwitchesCabinFloor(void)
 {
     if (current_floor == 0)
@@ -75,18 +85,10 @@ static void processLimitSwitchesCabinFloor(void)
     }
 }
 
-static void processLimitSwitchesCabinFloorLow(void)
-{
-    if (current_floor != 0)
-    {
-        current_position = e_CabinPositionLow;
-        PositionChanged();
-    }
-}
+
 
 void CabinSet(int floor, positionType state)
 {
-
     current_floor = floor;
     current_position = state;
 }

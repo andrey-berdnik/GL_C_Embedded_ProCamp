@@ -15,7 +15,7 @@ void tearDown(void)
 {
 }
 
-void test_MotorGetState()
+void test_MotorGetState_unit()
 {
     TEST_ASSERT(MotorGetState() == e_MotorSpeedOff);
 
@@ -25,7 +25,7 @@ void test_MotorGetState()
     TEST_ASSERT(MotorGetState() == e_MotorLowSpeedUp);
 }
 
-void test_MotorLowSpeedUp()
+void test_MotorLowSpeedUp_unit()
 {
     HAL_MotorLowSpeedUp_Expect();
     MotorLowSpeedUp();
@@ -35,7 +35,7 @@ void test_MotorLowSpeedUp()
     MotorLowSpeedUp();
 }
 
-void test_MotorHighSpeedUp()
+void test_MotorHighSpeedUp_unit()
 {
     HAL_MotorHighSpeedUp_Expect();
     MotorHighSpeedUp();
@@ -44,7 +44,7 @@ void test_MotorHighSpeedUp()
 
     MotorHighSpeedUp();
 }
-void test_MotorLowSpeedDown()
+void test_MotorLowSpeedDown_unit()
 {
     HAL_MotorLowSpeedDown_Expect();
     MotorLowSpeedDown();
@@ -54,7 +54,7 @@ void test_MotorLowSpeedDown()
     MotorLowSpeedDown();
 }
 
-void test_MotorHighSpeedDown()
+void test_MotorHighSpeedDown_unit()
 {
     HAL_MotorHighSpeedDown_Expect();
     MotorHighSpeedDown();
@@ -64,7 +64,7 @@ void test_MotorHighSpeedDown()
     MotorHighSpeedDown();
 }
 
-void test_MotorSpeedOff()
+void test_MotorSpeedOff_unit()
 {
     HAL_MotorHighSpeedDown_Expect();
     MotorHighSpeedDown();

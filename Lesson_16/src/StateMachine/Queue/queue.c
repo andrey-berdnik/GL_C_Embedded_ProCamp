@@ -2,7 +2,7 @@
 #include "stdbool.h"
 #include "hal.h"
 
-bool queue[4][2];
+static bool queue[4][2];
 H_HAL_trigger_CB run_queue_processing;
 
 static void processKeysFloor3InCabin(void);
