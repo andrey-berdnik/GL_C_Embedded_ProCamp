@@ -1,7 +1,7 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ELEVATOR_LOGIC_H
+#define ELEVATOR_LOGIC_H
 
 void ElevatorLogicInit();
 void ElevatorLogicRunMoveToTargetFloor();
 
-#endif
+#endif //ELEVATOR_LOGIC_H

@@ -35,7 +35,6 @@ static void processKeysStop(void)
     QueueDrop();
     MotorSpeedOff();
     CabinBrackeEnable();
-    printf("Stop process initialized");
     MovingDirection = e_MainMovingStop;
 }
 
